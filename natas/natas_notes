@@ -1,0 +1,79 @@
+# Natas Websec CTF Fieldnotes
+
+* http://docs.python-requests.org/en/master
+* https://github.com/rctay/sublime-text-2-buildview
+* for splitting sublime window into text + console
+* install build view plugin
+* type: build view in sublime console to enable 
+
+## Natas6
+
+* https://github.com/SublimeLinter/SublimeLinter-html-tidy
+* decode html install plugin: stringencode
+* execute from console: html denetize
+* 
+
+The page checks if post requests matches to string specified in /includes/secret.inc, which is a php file that is accidentily accessible via the browser because of the wrong file name extension. After deobfuscating the sourcecode was readable.
+
+'
+<?
+$secret = "FOEIUWGHFEEUHOFUOIU";
+?>
+'
+
+## Natas7 local file inclusion
+
+*<!-- hint: password for webuser natas8 is in /etc/natas_webpass/natas8 -->
+* https://stackoverflow.com/questions/38476648/python-requests-call-with-url-using-parameters
+* define params for php requests for python module requests
+
+The page is vulnerable for local file inclusion: accessing files outside of the web root. The PHP script is able to read files from the filesystem which are not in webroot and should not be publicly accessible
+
+* https://www.owasp.org/index.php/Testing_for_Local_File_Inclusion
+
+## Natas8
+
+* php file which compares entered password to encoded hardcoded password
+* take source code and run it to decode the pw-string
+
+<?php
+echo base64_decode(strrev(hex2bin("3d3d516343746d4d6d6c315669563362")));
+?>
+
+output: oubWYf2kBq
+
+## Natas9 command injection
+
+* https://www.owasp.org/index.php/Command_Injection
+* needle php: https://teamtreehouse.com/community/what-is-needle-and-haystack-in-php
+* ; is a bash feature which executes multiple in a single line
+
+The page is vulnerable to command injection. The search field input does not escape some characters correct.
+
+http://natas9.natas.labs.overthewire.org/?needle=%3Bls&submit=Search
+
+output: dictionary.txt
+
+## Natas10 command injection
+
+* similar to natas9 but with escaped char: if(preg_match('/[;|&]/',$key))
+* an attacker can circumvent this escape by passing two arguments to the grep command
+
+## Natas11 XOR "encryption" of cookies (not solved)
+
+* https://docs.python.org/2/library/urllib.html
+* https://en.wikipedia.org/wiki/XOR_gate
+* https://medium.com/@m.f.m.barber/natas-11-and-reverse-engineering-xor-encryption-6133bca7cf64
+
+got stuck on modifying php script to xor cookie data and key to new cookie data
+
+* EDXp0pS26wLKHZy1rDBPUZk0RKfLGIR3 from f. m. barbers blog
+
+
+
+
+
+
+
+
+
